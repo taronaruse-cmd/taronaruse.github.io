@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First 90 Days: Diagnosing Product Execution — Taro Naruse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F0EDE6;
+    --near-black: #111110;
+    --dark-section: #141412;
+    --gold: #B8922A;
+    --gold-light: #C9A84C;
+    --text-primary-light: #1a1916;
+    --text-secondary-light: #5a5751;
+    --text-primary-dark: #F0EDE6;
+    --text-secondary-dark: #9a9790;
+    --border-light: #ddd9d1;
+    --border-dark: #2a2926;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary-light);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border-light);
+    padding: 0 48px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary-light);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary-light);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    padding: 140px 80px 100px;
+    background: var(--dark-section);
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .hero-eyebrow-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold-light);
+  }
+
+  .eyebrow-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 5.5vw, 76px);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--text-primary-dark);
+    margin-bottom: 28px;
+  }
+
+  .hero-title em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--text-secondary-dark);
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  .hero-stats {
+    padding-top: 8px;
+  }
+
+  .stat-item {
+    padding: 24px 0;
+    border-top: 1px solid var(--border-dark);
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary-dark);
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-size: 14px;
+    color: var(--text-primary-dark);
+    line-height: 1.5;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote-band {
+    background: var(--cream);
+    padding: 80px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pull-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 700;
+    color: var(--text-primary-light);
+    line-height: 1.4;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .pull-quote em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* PHASE SECTION */
+  .section {
+    padding: 100px 80px;
+    background: var(--cream);
+  }
+
+  .section-dark {
+    padding: 100px 80px;
+    background: var(--dark-section);
+  }
+
+  .section-header {
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .section-eyebrow-dark {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 3.5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary-light);
+    margin-bottom: 20px;
+  }
+
+  .section-title-dark {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 3.5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary-dark);
+    margin-bottom: 20px;
+  }
+
+  .section-intro {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary-light);
+    font-weight: 300;
+    max-width: 620px;
+  }
+
+  .section-intro-dark {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary-dark);
+    font-weight: 300;
+    max-width: 620px;
+  }
+
+  /* PHASE TIMELINE */
+  .phase-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .phase-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .phase-item:last-child { border-bottom: none; }
+
+  .phase-label-col {
+    padding: 36px 32px;
+    background: #EAE7DF;
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .phase-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .phase-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary-light);
+  }
+
+  .phase-content {
+    padding: 36px 40px;
+  }
+
+  .phase-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary-light);
+    margin-bottom: 14px;
+  }
+
+  .phase-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary-light);
+    margin-bottom: 20px;
+  }
+
+  .phase-output {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #F7F4EF;
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+  }
+
+  .output-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary-light);
+  }
+
+  .output-value {
+    font-size: 13px;
+    color: var(--text-primary-light);
+    font-style: italic;
+  }
+
+  /* DIAGNOSTIC DIMENSIONS */
+  .dimensions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .dim-card {
+    padding: 40px;
+    border-right: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .dim-card:nth-child(2n) { border-right: none; }
+  .dim-card:nth-last-child(-n+2) { border-bottom: none; }
+
+  .dim-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .dim-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary-dark);
+    margin-bottom: 16px;
+  }
+
+  .dim-questions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dim-questions li {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary-dark);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .dim-questions li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold-light);
+    font-size: 12px;
+  }
+
+  /* COMMON PATTERNS */
+  .patterns-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .pattern-card {
+    padding: 32px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    background: #F7F4EF;
+  }
+
+  .pattern-flag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .pattern-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary-light);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .pattern-body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-secondary-light);
+  }
+
+  /* CHANGE LEVERS */
+  .levers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 60px;
+  }
+
+  .lever-item {
+    display: grid;
+    grid-template-columns: 48px 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    padding: 36px 40px;
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .lever-item:last-child { border-bottom: none; }
+
+  .lever-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--gold-light);
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .lever-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary-dark);
+    margin-bottom: 10px;
+  }
+
+  .lever-body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary-dark);
+  }
+
+  .lever-outcome {
+    padding: 16px 20px;
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    align-self: center;
+  }
+
+  .outcome-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary-dark);
+    margin-bottom: 8px;
+  }
+
+  .outcome-text {
+    font-size: 13px;
+    color: var(--gold-light);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* BELIEFS BAND */
+  .beliefs-band {
+    background: var(--near-black);
+    padding: 80px;
+  }
+
+  .beliefs-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .beliefs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    max-width: 960px;
+    margin: 0 auto;
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .belief-item {
+    padding: 40px;
+    border-right: 1px solid var(--border-dark);
+    text-align: center;
+  }
+
+  .belief-item:last-child { border-right: none; }
+
+  .belief-statement {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary-dark);
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .belief-statement em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .belief-sub {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary-dark);
+  }
+
+  /* FINAL */
+  .final-thought {
+    background: var(--dark-section);
+    padding: 100px 80px;
+    text-align: center;
+    border-top: 1px solid var(--border-dark);
+  }
+
+  .final-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 32px;
+  }
+
+  .final-statement {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 44px);
+    font-weight: 800;
+    color: var(--text-primary-dark);
+    line-height: 1.2;
+    max-width: 720px;
+    margin: 0 auto 28px;
+  }
+
+  .final-statement em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .final-sub {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary-dark);
+    max-width: 480px;
+    margin: 0 auto 48px;
+  }
+
+  .author-sig {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    border: 1px solid var(--border-dark);
+    border-radius: 2px;
+  }
+
+  .sig-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary-dark);
+  }
+
+  .sig-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  .sig-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    text-decoration: none;
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .hero { padding: 120px 24px 80px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    .section, .section-dark { padding: 72px 24px; }
+    .pull-quote-band { padding: 60px 24px; }
+    .phase-item { grid-template-columns: 1fr; }
+    .phase-label-col { border-right: none; border-bottom: 1px solid var(--border-light); flex-direction: row; gap: 12px; align-items: center; }
+    .dimensions-grid { grid-template-columns: 1fr; }
+    .dim-card { border-right: none; }
+    .patterns-grid { grid-template-columns: 1fr; }
+    .lever-item { grid-template-columns: 40px 1fr; }
+    .lever-outcome { grid-column: 2; }
+    .beliefs-grid { grid-template-columns: 1fr; }
+    .belief-item { border-right: none; border-bottom: 1px solid var(--border-dark); }
+    .belief-item:last-child { border-bottom: none; }
+    .beliefs-band { padding: 60px 24px; }
+    .final-thought { padding: 80px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-label">TARO NARUSE · PRODUCT THINKING</span>
+  <ul class="nav-links">
+    <li><a href="#framework">FRAMEWORK</a></li>
+    <li><a href="#diagnose">DIAGNOSE</a></li>
+    <li><a href="#patterns">PATTERNS</a></li>
+    <li><a href="#change">DRIVE CHANGE</a></li>
+  </ul>
+</nav>
+
+<!-- HERO (dark) -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    <span class="eyebrow-text">Product Execution · Field Notes</span>
+  </div>
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-title">First 90 Days:<br>Diagnosing and<br>Fixing <em>Product Execution</em></h1>
+      <p class="hero-subtitle">In most product organizations, the issue isn't lack of effort — it's lack of clarity. Teams are busy, but not aligned. Everyone is working hard, but not in the same direction.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">The Core Problem</div>
+        <div class="stat-value">Most teams are trying to do too much</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">The First Job</div>
+        <div class="stat-value">Diagnose where the system is breaking — then fix it</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">My Approach</div>
+        <div class="stat-value">Four phases. Structured. Time-boxed. Outcome-oriented.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pull-quote-band">
+  <p class="pull-quote">Product organizations rarely fail because of effort. They fail because the system <em>doesn't support good decisions</em> that happen quickly.</p>
+</div>
+
+<!-- THE FOUR PHASES -->
+<section class="section" id="framework">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">The Framework</div>
+    <h2 class="section-title">Four phases. Ninety days.</h2>
+    <p class="section-intro">Each phase builds on the last. You can't fix what you haven't diagnosed, and you can't diagnose without first understanding what the business actually needs.</p>
+  </div>
+
+  <div class="phase-list fade-in">
+    <div class="phase-item">
+      <div class="phase-label-col">
+        <div class="phase-num">01</div>
+        <div class="phase-name">Business Context</div>
+      </div>
+      <div class="phase-content">
+        <h3 class="phase-title">Understand what the business actually needs</h3>
+        <p class="phase-body">Before evaluating Product, establish what the business needs from it. What is the company trying to achieve — growth, profitability, efficiency? What are the primary constraints — acquisition, retention, monetization, execution? Where is it underperforming?</p>
+        <div class="phase-output">
+          <span class="output-label">Output</span>
+          <span class="output-value">A clear view of what Product should optimize for and how success will be measured</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-label-col">
+        <div class="phase-num">02</div>
+        <div class="phase-name">System Diagnosis</div>
+      </div>
+      <div class="phase-content">
+        <h3 class="phase-title">Evaluate Product as a system</h3>
+        <p class="phase-body">Product is not a collection of individuals — it's a system. I evaluate it across four dimensions: People, Strategy, Process, and Culture. The goal is to understand where execution is breaking, and why.</p>
+        <div class="phase-output">
+          <span class="output-label">Output</span>
+          <span class="output-value">A clear map of where the system is failing and the root causes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-label-col">
+        <div class="phase-num">03</div>
+        <div class="phase-name">Gap Identification</div>
+      </div>
+      <div class="phase-content">
+        <h3 class="phase-title">Name the systemic issues</h3>
+        <p class="phase-body">Most issues are not isolated — they're systemic. A strategy problem produces execution problems. An ownership problem produces alignment problems. Identifying the root pattern is what makes the fix durable rather than cosmetic.</p>
+        <div class="phase-output">
+          <span class="output-label">Output</span>
+          <span class="output-value">A prioritized list of systemic gaps and their downstream effects</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-label-col">
+        <div class="phase-num">04</div>
+        <div class="phase-name">Drive Change</div>
+      </div>
+      <div class="phase-content">
+        <h3 class="phase-title">A small number of high-leverage changes</h3>
+        <p class="phase-body">Once gaps are clear, I focus on a small number of changes that unlock performance. Not a comprehensive transformation. The things that remove the most friction for the most people, as fast as possible.</p>
+        <div class="phase-output">
+          <span class="output-label">Output</span>
+          <span class="output-value">Teams moving faster with clearer direction and stronger alignment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUR DIMENSIONS -->
+<section class="section-dark" id="diagnose">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow-dark">Phase 02 · In Depth</div>
+    <h2 class="section-title-dark">Diagnosing the product system</h2>
+    <p class="section-intro-dark">Product as a system has four dimensions. Weaknesses in any one of them constrain the whole. These are the questions I ask in each.</p>
+  </div>
+
+  <div class="dimensions-grid fade-in">
+    <div class="dim-card">
+      <div class="dim-icon">People</div>
+      <h3 class="dim-title">Do we have the right people?</h3>
+      <ul class="dim-questions">
+        <li>Do we have the right mix of skills — strategy, execution, data, design, engineering partnership?</li>
+        <li>PMs are not interchangeable; success is highly context-dependent. Does each PM match their problem?</li>
+        <li>Who are the highest-leverage contributors? Where are the critical gaps?</li>
+      </ul>
+    </div>
+    <div class="dim-card">
+      <div class="dim-icon">Strategy</div>
+      <h3 class="dim-title">Is direction clear?</h3>
+      <ul class="dim-questions">
+        <li>Is there a clear strategy tied to business outcomes — or a mission statement masquerading as one?</li>
+        <li>Do teams understand what matters vs. what doesn't?</li>
+        <li>Can any individual on the team explain why their work connects to company goals?</li>
+      </ul>
+    </div>
+    <div class="dim-card">
+      <div class="dim-icon">Process</div>
+      <h3 class="dim-title">Does the team reliably deliver?</h3>
+      <ul class="dim-questions">
+        <li>Are there clear prioritization and execution rhythms that teams actually use?</li>
+        <li>Is process "just enough" — or is it either absent or suffocating?</li>
+        <li>Do teams have the feedback loops needed to know what's working?</li>
+      </ul>
+    </div>
+    <div class="dim-card">
+      <div class="dim-icon">Culture</div>
+      <h3 class="dim-title">Is the team outcome-oriented?</h3>
+      <ul class="dim-questions">
+        <li>Is the team focused on outcomes — or on activity? Shipping — or delivering?</li>
+        <li>Are standards genuinely high? Is accountability real?</li>
+        <li>Is failure treated as information, or avoided and hidden?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- COMMON PATTERNS -->
+<section class="section" id="patterns">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">Phase 03 · In Depth</div>
+    <h2 class="section-title">The most common failure patterns</h2>
+    <p class="section-intro">These systemic issues appear repeatedly across companies at different stages. They rarely exist in isolation — each one amplifies the others.</p>
+  </div>
+
+  <div class="patterns-grid fade-in">
+    <div class="pattern-card">
+      <div class="pattern-flag">Pattern 01</div>
+      <h3 class="pattern-title">Mission masquerading as strategy</h3>
+      <p class="pattern-body">There's no clear way to prioritize. Everything can be justified by the "strategy" — which means nothing gets filtered. Teams diverge without realizing it.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-flag">Pattern 02</div>
+      <h3 class="pattern-title">Roadmapping disconnected from goals</h3>
+      <p class="pattern-body">Teams are busy but not moving outcomes. Shipping is confused with delivering. The roadmap exists but doesn't connect to what the business actually needs to win.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-flag">Pattern 03</div>
+      <h3 class="pattern-title">Product managers as project managers</h3>
+      <p class="pattern-body">Actual product decisions are being made elsewhere — by engineering, sales, or founders. PMs are coordinating work rather than owning direction and outcomes.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-flag">Pattern 04</div>
+      <h3 class="pattern-title">Limited access to timely data</h3>
+      <p class="pattern-body">Decision-making is slow or not data-driven because teams can't get the information they need when they need it. Gut replaces evidence. Speed suffers. Quality suffers.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-flag">Pattern 05</div>
+      <h3 class="pattern-title">Unclear ownership and decision rights</h3>
+      <p class="pattern-body">Teams don't know what they own or who makes what decisions. Every significant choice requires escalation. Alignment meetings become the product instead of the work.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-flag">Pattern 06</div>
+      <h3 class="pattern-title">Doing too much at once</h3>
+      <p class="pattern-body">The team is spread across too many priorities. Nothing gets the focus required to actually move. This often masquerades as execution problems when it's actually a strategy and prioritization failure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHANGE LEVERS -->
+<section class="section-dark" id="change">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow-dark">Phase 04 · In Depth</div>
+    <h2 class="section-title-dark">The changes that unlock performance</h2>
+    <p class="section-intro-dark">Once gaps are identified, I focus on a small number of high-leverage interventions. Not everything at once. The things that remove the most friction, fastest.</p>
+  </div>
+
+  <div class="levers-list fade-in">
+    <div class="lever-item">
+      <div class="lever-num">1</div>
+      <div>
+        <h3 class="lever-title">Align leadership and cross-functional teams</h3>
+        <p class="lever-body">Create common understanding of challenges and levers. Get teams working toward the same priorities — not just in the same meetings. Alignment is not agreement in a room; it's consistency in behavior outside of it.</p>
+      </div>
+      <div class="lever-outcome">
+        <div class="outcome-label">Unlocks</div>
+        <p class="outcome-text">Teams stop re-litigating direction and start moving</p>
+      </div>
+    </div>
+    <div class="lever-item">
+      <div class="lever-num">2</div>
+      <div>
+        <h3 class="lever-title">Define a small set of measurable goals</h3>
+        <p class="lever-body">Focus shifts from "do everything" to "do the right things." Three outcomes tied to business results, owned clearly, with visible progress. Outcomes over activity — always.</p>
+      </div>
+      <div class="lever-outcome">
+        <div class="outcome-label">Unlocks</div>
+        <p class="outcome-text">A shared definition of winning that drives daily decisions</p>
+      </div>
+    </div>
+    <div class="lever-item">
+      <div class="lever-num">3</div>
+      <div>
+        <h3 class="lever-title">Clarify ownership and decision rights</h3>
+        <p class="lever-body">Every team knows what they own and how success is measured. Decisions that belong at the team level stay there. Escalation is the exception, not the norm.</p>
+      </div>
+      <div class="lever-outcome">
+        <div class="outcome-label">Unlocks</div>
+        <p class="outcome-text">Speed. The most common bottleneck is unclear ownership, not missing capability.</p>
+      </div>
+    </div>
+    <div class="lever-item">
+      <div class="lever-num">4</div>
+      <div>
+        <h3 class="lever-title">Introduce lightweight operating discipline</h3>
+        <p class="lever-body">Enough structure to drive consistency — without slowing teams down. Rhythm creates reliability. Reliability creates trust. Trust creates the autonomy that high performers need to do their best work.</p>
+      </div>
+      <div class="lever-outcome">
+        <div class="outcome-label">Unlocks</div>
+        <p class="outcome-text">Predictability and velocity — at the same time</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE BELIEFS -->
+<div class="beliefs-band">
+  <div class="beliefs-label">Core Beliefs</div>
+  <div class="beliefs-grid">
+    <div class="belief-item">
+      <p class="belief-statement">Speed comes from <em>clarity</em>, not process</p>
+      <p class="belief-sub">Adding more structure rarely fixes a speed problem. Removing ambiguity almost always does.</p>
+    </div>
+    <div class="belief-item">
+      <p class="belief-statement">Most product problems are <em>system</em> problems</p>
+      <p class="belief-sub">Not people problems. The system either supports good decisions or it doesn't. Fix the system first.</p>
+    </div>
+    <div class="belief-item">
+      <p class="belief-statement">Fix execution by improving <em>how decisions are made</em></p>
+      <p class="belief-sub">Not by adding more work. Not by adding more process. By making the decisions faster and better.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<section class="final-thought">
+  <div class="final-label">The Bottom Line</div>
+  <h2 class="final-statement">The first 90 days are about<br><em>understanding the system</em><br>before changing it.</h2>
+  <p class="final-sub">Change before diagnosis produces motion without direction. Diagnosis before change produces clarity before speed. The order matters.</p>
+  <div class="author-sig">
+    <span class="sig-name">TARO NARUSE</span>
+    <div class="sig-dot"></div>
+    <a href="https://www.linkedin.com/in/taronaruse" class="sig-link">LINKEDIN ↗</a>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

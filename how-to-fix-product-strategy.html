@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Fix a Product Strategy — Taro Naruse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F0EDE6;
+    --near-black: #111110;
+    --dark-section: #141412;
+    --gold: #B8922A;
+    --gold-light: #C9A84C;
+    --text-primary-light: #1a1916;
+    --text-secondary-light: #5a5751;
+    --text-primary-dark: #F0EDE6;
+    --text-secondary-dark: #9a9790;
+    --border-light: #ddd9d1;
+    --border-dark: #2a2926;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary-light);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border-light);
+    padding: 0 48px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary-light);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary-light);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    padding: 140px 80px 100px;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .hero-eyebrow-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .eyebrow-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 80px);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--text-primary-light);
+    margin-bottom: 28px;
+  }
+
+  .hero-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--text-secondary-light);
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  .hero-meta {
+    padding-top: 8px;
+  }
+
+  .meta-item {
+    padding: 20px 0;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary-light);
+    margin-bottom: 8px;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    color: var(--text-primary-light);
+    line-height: 1.5;
+  }
+
+  /* PULL QUOTE BAND */
+  .pull-quote-band {
+    background: var(--dark-section);
+    padding: 80px;
+  }
+
+  .pull-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    color: var(--text-primary-dark);
+    line-height: 1.35;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .pull-quote em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  /* SECTION STANDARD */
+  .section {
+    padding: 100px 80px;
+    background: var(--cream);
+  }
+
+  .section-dark {
+    padding: 100px 80px;
+    background: var(--dark-section);
+  }
+
+  .section-header {
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .section-eyebrow-dark {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary-light);
+    margin-bottom: 20px;
+  }
+
+  .section-title-dark {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary-dark);
+    margin-bottom: 20px;
+  }
+
+  .section-intro {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-secondary-light);
+    font-weight: 300;
+    max-width: 640px;
+  }
+
+  .section-intro-dark {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-secondary-dark);
+    font-weight: 300;
+    max-width: 640px;
+  }
+
+  /* DIAGNOSIS GRID */
+  .diagnosis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .diagnosis-card {
+    padding: 40px;
+    border-right: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .diagnosis-card:nth-child(2n) { border-right: none; }
+  .diagnosis-card:nth-last-child(-n+2) { border-bottom: none; }
+
+  .diag-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 16px;
+    letter-spacing: 0.08em;
+  }
+
+  .diag-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary-light);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .diag-body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary-light);
+  }
+
+  /* FAILURE MODES */
+  .failure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .failure-card {
+    padding: 40px;
+    border-right: 1px solid var(--border-dark);
+  }
+
+  .failure-card:last-child { border-right: none; }
+
+  .fail-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+
+  .fail-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary-dark);
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  .fail-body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary-dark);
+  }
+
+  .fail-callout {
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: rgba(184, 146, 42, 0.12);
+    border-left: 2px solid var(--gold-light);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold-light);
+    line-height: 1.5;
+  }
+
+  /* FIX STEPS */
+  .fix-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .fix-step {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    align-items: start;
+    padding: 40px;
+    border-bottom: 1px solid var(--border-light);
+    gap: 40px;
+  }
+
+  .fix-step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .step-content {}
+
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary-light);
+    margin-bottom: 12px;
+  }
+
+  .step-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary-light);
+  }
+
+  .step-aside {
+    padding: 20px 24px;
+    background: #F7F4EF;
+    border-radius: 3px;
+    align-self: center;
+  }
+
+  .aside-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary-light);
+    margin-bottom: 10px;
+  }
+
+  .aside-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary-light);
+    font-style: italic;
+  }
+
+  /* WHAT GOOD LOOKS LIKE */
+  .good-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 60px;
+  }
+
+  .good-card {
+    padding: 36px;
+    border-right: 1px solid var(--border-dark);
+  }
+
+  .good-card:last-child { border-right: none; }
+
+  .good-icon {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .good-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary-dark);
+    margin-bottom: 10px;
+  }
+
+  .good-body {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-secondary-dark);
+  }
+
+  /* FINAL THOUGHT */
+  .final-thought {
+    background: var(--near-black);
+    padding: 100px 80px;
+    text-align: center;
+  }
+
+  .final-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 32px;
+  }
+
+  .final-statement {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    color: var(--text-primary-dark);
+    line-height: 1.2;
+    max-width: 700px;
+    margin: 0 auto 28px;
+  }
+
+  .final-statement em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .final-sub {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary-dark);
+    max-width: 500px;
+    margin: 0 auto 48px;
+  }
+
+  .author-sig {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    border: 1px solid var(--border-dark);
+    border-radius: 2px;
+  }
+
+  .sig-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary-dark);
+  }
+
+  .sig-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  .sig-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    text-decoration: none;
+  }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .hero { padding: 120px 24px 80px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    .section, .section-dark { padding: 72px 24px; }
+    .pull-quote-band { padding: 60px 24px; }
+    .diagnosis-grid { grid-template-columns: 1fr; }
+    .diagnosis-card { border-right: none; }
+    .failure-grid { grid-template-columns: 1fr; }
+    .failure-card { border-right: none; border-bottom: 1px solid var(--border-dark); }
+    .failure-card:last-child { border-bottom: none; }
+    .fix-step { grid-template-columns: 48px 1fr; }
+    .step-aside { grid-column: 2; }
+    .good-grid { grid-template-columns: 1fr; }
+    .good-card { border-right: none; border-bottom: 1px solid var(--border-dark); }
+    .good-card:last-child { border-bottom: none; }
+    .final-thought { padding: 80px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-label">TARO NARUSE · PRODUCT THINKING</span>
+  <ul class="nav-links">
+    <li><a href="#diagnosis">DIAGNOSIS</a></li>
+    <li><a href="#failure">FAILURE MODES</a></li>
+    <li><a href="#fix">THE FIX</a></li>
+    <li><a href="#principles">PRINCIPLES</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    <span class="eyebrow-text">Product Strategy · Field Notes</span>
+  </div>
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-title">How to Fix a<br>Product <em>Strategy</em><br>(and Why Most Fail)</h1>
+      <p class="hero-subtitle">Most product strategies don't fail because they're wrong. They fail because they're not usable. This is how I diagnose and fix them.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">Author</div>
+        <div class="meta-value">Taro Naruse</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Context</div>
+        <div class="meta-value">Across industries and company stages — from Series B to public scale</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Core Argument</div>
+        <div class="meta-value">If your strategy isn't shaping daily decisions, it's not a strategy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pull-quote-band">
+  <p class="pull-quote">If your strategy isn't <em>actively shaping the decisions</em> individuals make every day — it's not a strategy.</p>
+</div>
+
+<!-- DIAGNOSIS -->
+<section class="section" id="diagnosis">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">The Diagnosis</div>
+    <h2 class="section-title">How to spot a broken strategy</h2>
+    <p class="section-intro">Four signals that your strategy is not functioning as a decision-making tool — the core issue in nearly every case.</p>
+  </div>
+
+  <div class="diagnosis-grid fade-in">
+    <div class="diagnosis-card">
+      <div class="diag-num">01</div>
+      <div class="diag-title">Ask 10 people. Get 10 answers.</div>
+      <p class="diag-body">If the team can't align on what the strategy is, it isn't functioning as one. Strategy is only real if it's shared.</p>
+    </div>
+    <div class="diagnosis-card">
+      <div class="diag-num">02</div>
+      <div class="diag-title">Teams can't explain the why.</div>
+      <p class="diag-body">When individuals can't articulate why they're working on something, the strategy has failed to connect to execution.</p>
+    </div>
+    <div class="diagnosis-card">
+      <div class="diag-num">03</div>
+      <div class="diag-title">Strategy is never referenced.</div>
+      <p class="diag-body">A strategy that isn't invoked in day-to-day decisions isn't guiding the org — it's theater. Decoration, not direction.</p>
+    </div>
+    <div class="diagnosis-card">
+      <div class="diag-num">04</div>
+      <div class="diag-title">It sounds like a mission statement.</div>
+      <p class="diag-body">Inspirational language that doesn't force trade-offs isn't strategy. If it can justify everything, it justifies nothing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAILURE MODES -->
+<section class="section-dark" id="failure">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow-dark">Most Common Failure Modes</div>
+    <h2 class="section-title-dark">Three ways strategy breaks down</h2>
+    <p class="section-intro-dark">These patterns appear across companies at every stage. Understanding them is the first step to fixing them.</p>
+  </div>
+
+  <div class="failure-grid fade-in">
+    <div class="failure-card">
+      <div class="fail-label">Failure Mode 01</div>
+      <h3 class="fail-title">Strategy ≠ Mission</h3>
+      <p class="fail-body">Mission is inspirational, long-term, and broad. Strategy is focused, time-bound, and grounded in reality. Conflating the two produces language that inspires but doesn't guide.</p>
+      <div class="fail-callout">If it doesn't force trade-offs, it's not strategy.</div>
+    </div>
+    <div class="failure-card">
+      <div class="fail-label">Failure Mode 02</div>
+      <h3 class="fail-title">No link to execution</h3>
+      <p class="fail-body">Strategy and execution are not separate layers — they operate in a loop. Strategy guides execution; execution validates and refines strategy. Break the loop and strategy becomes theater.</p>
+      <div class="fail-callout">If teams aren't invoking strategy unprompted, it's disconnected.</div>
+    </div>
+    <div class="failure-card">
+      <div class="fail-label">Failure Mode 03</div>
+      <h3 class="fail-title">It doesn't help you say no</h3>
+      <p class="fail-body">A good strategy makes the important things obvious — and makes distractions easy to dismiss. Choosing between priorities is hard. Choosing between priorities and distractions should be easy.</p>
+      <div class="fail-callout">What matters. What doesn't. That's the test.</div>
+    </div>
+  </div>
+</section>
+
+<!-- THE FIX -->
+<section class="section" id="fix">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow">The Fix</div>
+    <h2 class="section-title">Four steps to a usable strategy</h2>
+    <p class="section-intro">This is the framework I use to rebuild strategy when teams have traction but can't translate it into consistent execution.</p>
+  </div>
+
+  <div class="fix-steps fade-in">
+    <div class="fix-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3 class="step-title">Set a real time horizon</h3>
+        <p class="step-body">Lock the strategy to 12 months. Anything longer becomes speculation — you're guessing too far out. Anything shorter becomes tactics — you're not setting direction at all. Twelve months is the window where strategy is both grounded and meaningful.</p>
+      </div>
+      <div class="step-aside">
+        <div class="aside-label">The Rule</div>
+        <p class="aside-body">12 months. Not 3 years. Not 90 days. Strategy operates in the space between.</p>
+      </div>
+    </div>
+
+    <div class="fix-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3 class="step-title">Define success — 3 outcomes max</h3>
+        <p class="step-body">Ask: what must be true in 12 months for us to win? Pick three measurable outcomes. No more. Constraint is the point. If everything is important, nothing is. Three outcomes forces the organization to agree on what winning actually looks like.</p>
+      </div>
+      <div class="step-aside">
+        <div class="aside-label">The Question</div>
+        <p class="aside-body">"What must be true in 12 months for us to win?" Three answers. Measurable. No more.</p>
+      </div>
+    </div>
+
+    <div class="fix-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3 class="step-title">Identify the drivers</h3>
+        <p class="step-body">Ask: what actually causes these outcomes to happen? This is the hardest and most important step. It forces real conversations about customers, competition, and company capabilities. It surfaces assumptions — which are hypotheses, not truths. If you can't articulate the drivers, you don't have a strategy.</p>
+      </div>
+      <div class="step-aside">
+        <div class="aside-label">Why It's Hard</div>
+        <p class="aside-body">This step requires data and debate. Most orgs skip it because it's uncomfortable. That's exactly why most strategies fail.</p>
+      </div>
+    </div>
+
+    <div class="fix-step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3 class="step-title">Push strategy down to teams</h3>
+        <p class="step-body">Once drivers are clear, teams own how they move those drivers. Roadmaps become aligned by design. Trade-offs become consistent across the org. This is how you get top-to-bottom alignment — through empowerment, not micromanagement.</p>
+      </div>
+      <div class="step-aside">
+        <div class="aside-label">What This Unlocks</div>
+        <p class="aside-body">Teams reference strategy without being asked. Decisions are faster. Trade-offs are clear. Strategy becomes the operating system of the company.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT GOOD LOOKS LIKE -->
+<section class="section-dark" id="principles">
+  <div class="section-header fade-in">
+    <div class="section-eyebrow-dark">What Good Looks Like</div>
+    <h2 class="section-title-dark">Strategy working as intended</h2>
+    <p class="section-intro-dark">When strategy is functioning correctly, these things become true without effort — they emerge from the system.</p>
+  </div>
+
+  <div class="good-grid fade-in">
+    <div class="good-card">
+      <div class="good-icon">→</div>
+      <h3 class="good-title">Unprompted invocation</h3>
+      <p class="good-body">Teams reference strategy in conversations you're not in. Decisions cite it without being asked. It has become the shared language of prioritization.</p>
+    </div>
+    <div class="good-card">
+      <div class="good-icon">→</div>
+      <h3 class="good-title">Faster, more consistent decisions</h3>
+      <p class="good-body">Trade-offs that used to require escalation get resolved at the team level. Alignment happens earlier because the direction is clear.</p>
+    </div>
+    <div class="good-card">
+      <div class="good-icon">→</div>
+      <h3 class="good-title">A continuous feedback loop</h3>
+      <p class="good-body">Learnings from execution feed back into strategy continuously. The strategy evolves because the system is designed to learn, not just to execute.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL THOUGHT -->
+<section class="final-thought" id="contact">
+  <div class="final-label">Final Thought</div>
+  <h2 class="final-statement">Strategy is not a document.<br>It's a <em>shared understanding</em><br>of how the business wins.</h2>
+  <p class="final-sub">And it shows up in every decision — not the ones made in offsites, but the ones made on a Tuesday afternoon when no one's watching.</p>
+  <div class="author-sig">
+    <span class="sig-name">TARO NARUSE</span>
+    <div class="sig-dot"></div>
+    <a href="https://www.linkedin.com/in/taronaruse" class="sig-link">LINKEDIN ↗</a>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
